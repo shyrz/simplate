@@ -48,6 +48,9 @@
 - 实现了基础功能 `evaluate` 和 `interpolate`
 - 添加了功能 `comment`
 
+### v0.1.1
+
+- 添加了功能 `nonEscape`
 
 ## License
 
