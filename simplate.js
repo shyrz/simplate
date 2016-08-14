@@ -108,7 +108,7 @@
       return new Function('data', tpl);
     } catch (e) {
       if (typeof console !== 'undefined') {
-        console.log('Cannot create a template function: \n' + tpl);
+        console.error('Cannot create a template function: \n' + tpl);
       }
       throw e;
     }
