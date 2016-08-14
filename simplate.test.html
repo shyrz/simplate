@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Simplate Test</title>
+    <style media="screen">
+      html, body { margin: 0; padding: 0; }
+      #spl-demo {
+        width: 720px;
+        height: 100%;
+        margin: 0 auto;
+        padding: 48px 0 0 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="spl-demo"></div>
+
+
+
+    <script src="./simplate.js" charset="utf-8"></script>
+    <script id="simplate" type="text/html">
+      <h1>Introduction</h1>
+      <p>Hi, I am {{= data.name }}!</p>
+      <p>A {{= data.age || '' }} year-old front-end developer.</p>
+      {{# 一段注释 }}
+      <ul>
+        {{ for( var prop in data ) { }}
+          <li>{{= prop}}</li>
+        {{ } }}
+      </ul>
+    </script>
+    <script type="text/javascript">
+      var data = {
+        "name": "Phantr4x",
+        "age": 21,
+        "uri": "https://github.com/Phantr4x/Simplate",
+      }
+
+      var simplateTmpl = simplate.template(document.getElementById('simplate').innerHTML);
+      console.log(simplateTmpl);
+      document.getElementById('spl-demo').innerHTML = simplateTmpl(data);
+    </script>
+  </body>
+</html>
