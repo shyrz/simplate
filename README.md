@@ -20,6 +20,12 @@
 {{= data.name }}
 ```
 
+**NonEscape（非编码输出）**
+
+```
+{{! data.url }}
+```
+
 **Comment（代码注释）**
 
 ```
@@ -28,15 +34,11 @@
 
 ## TODO
 
-**NonEscape（非编码输出）**
+1. `errorHandler()`
 
-```
-{{! data.url }}
-```
+2. Use `with() {}`
 
-**ErrorHandler**
-
-**...**
+3. ...
 
 ## Update Logs
 
@@ -44,7 +46,7 @@
 
 - 完成了模板基本架构
 - 实现了基础功能 `evaluate` 和 `interpolate`
-- 添加了功能 `comment` 
+- 添加了功能 `comment`
 
 
 ## License

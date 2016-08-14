@@ -17,24 +17,42 @@
     <div id="spl-demo"></div>
 
 
-
     <script src="./simplate.js" charset="utf-8"></script>
     <script id="simplate" type="text/html">
-      <h1>Introduction</h1>
-      <p>Hi, I am {{= data.name }}!</p>
-      <p>A {{= data.age || '' }} year-old front-end developer.</p>
-      {{# 一段注释 }}
+      <h1>Simplate Demo</h1>
+
+      <h2>基本输出</h2>
+      <p>Hi, I am {{= data.name }},</p>
+      <p>a {{= data.age || '' }} year-old front-end developer.</p>
+
+      <h2>非编码输出</h2>
+      Repo: <a href="{{! data.url }}">{{! data.url }}</a>
+      <p>{{! data.p }}</p>
+
+      <h2>循环输出</h2>
       <ul>
         {{ for( var prop in data ) { }}
           <li>{{= prop}}</li>
         {{ } }}
       </ul>
+
+      <h2>条件输出</h2>
+      {{ if ( data.isShow ) { }}
+        <p>{{= data.showContent }}</p>
+      {{ } }}
+
+      <h2>注释</h2>
+      <p>You cannot see!</p>
+      {{# 一段注释 }}
     </script>
     <script type="text/javascript">
       var data = {
-        "name": "Phantr4x",
-        "age": 21,
-        "uri": "https://github.com/Phantr4x/Simplate",
+        name: 'Phantr4x',
+        age: 21,
+        url: 'https://github.com/Phantr4x/Simplate',
+        p: '<p>A snippet of HTML.</p>',
+        isShow: true,
+        showContent: "You see!"
       }
 
       var simplateTmpl = simplate.template(document.getElementById('simplate').innerHTML);

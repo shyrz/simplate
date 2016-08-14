@@ -16,7 +16,6 @@
   simplate.SETTINGS = {
     cache: true,
     escape: true,
-    // detect: true,
     debug: true,
   };
 
@@ -27,7 +26,12 @@
     $isArray: Array.isArray() || function (obj) {
       return ({}).toString().call(obj);
     },
-    //...
+    $escapeHTML: function (str) {
+      return str.replace(/[&<>"'`=\/]/g, function (s) {
+        return simplate.escapeMap[s];
+      });
+    }
+      //...
   };
 
   simplate.config = function (option, value) {
@@ -47,6 +51,18 @@
     }
   };
 
+  simplate.escapeMap = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+    '/': '&#x2F;',
+    '`': '&#x60;',
+    '=': '&#x3D;'
+  }
+  simplate.skip = /$^/;
+
   simplate.template = function (tpl, data, options) {
     var self = this;
     options = options || {};
@@ -60,39 +76,39 @@
       return code.replace(/\\('|\\)/g, "$1").replace(/[\r\t\n]/g, " ");
     }
 
-    var idx = 0;
-    var str = tpl;
-    var tplStart = "';$out+=(";
-    var tplEnd = ");$out+='";
-    str = ("var $out = '" + str
+    tpl = ("var $out = '" + tpl
         .replace(/(^|\r|\n)\t* +| +\t*(\r|\n|$)/g, " ")
         .replace(/\r|\n|\t|\/\*[\s\S]*?\*\//g, "")
         .replace(/'|\\/g, "\\$&")
         // 匹配注释代码
-        .replace(self.TAGS.comment, function (match, code) {
-          console.log(code);
-          return "'/* " + unescape(code) + " */+'";
+        .replace(self.TAGS.comment || self.skip, function (match, code) {
+          // console.log(code);
+          return "' /* " + unescape(code) + " */ + '";
         })
         // 匹配插值代码
-        .replace(self.TAGS.interpolate, function (match, code) {
-          console.log(code);
-          return "'+(" + unescape(code) + ")+'";
+        .replace(self.TAGS.interpolate || self.skip, function (match, code) {
+          // console.log(code);
+          return "' + (" + unescape(code) + ") + '";
+        })
+        // 匹配非编码代码
+        .replace(self.TAGS.nonescape || self.skip, function (match, code) {
+          return "' + simplate.utils.$escapeHTML(" + unescape(code) + ") + '";
         })
         // 匹配边界符代码
-        .replace(self.TAGS.evaluate, function (match, code) {
-          console.log(code);
-          return "';" + unescape(code) + "$out+='"
+        .replace(self.TAGS.evaluate || self.skip, function (match, code) {
+          // console.log(code);
+          return "';" + unescape(code) + "$out += '"
         }) +
         "';return $out;")
       .replace(/\n/g, '\\n').replace(/\t/g, '\\t').replace(/\r/g, '\\r')
       .replace(/(\s|;|\}|^|\{)\$out\+='';/g, '$1').replace(/\+''/g, "");
-    console.log(str);
+    console.log(tpl);
 
     try {
-      return new Function('data', str);
+      return new Function('data', tpl);
     } catch (e) {
       if (typeof console !== 'undefined') {
-        console.log('Cannot create a template function: \n' + str);
+        console.log('Cannot create a template function: \n' + tpl);
       }
       throw e;
     }
@@ -108,7 +124,7 @@
 
   var _globals = (function () {
     return this || (0, eval)("this");
-  }());
+  })();
 
   if (typeof module !== "undefined" && module.exports) {
     module.exports = simplate;
