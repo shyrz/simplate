@@ -9,7 +9,7 @@
         width: 720px;
         height: 100%;
         margin: 0 auto;
-        padding: 48px 0 0 0;
+        /*padding: 48px 0 0 0;*/
       }
     </style>
   </head>
@@ -32,7 +32,7 @@
       <h2>循环输出</h2>
       <ul>
         {{ for( var prop in data ) { }}
-          <li>{{= prop}}</li>
+          <li>{{= prop }}</li>
         {{ } }}
       </ul>
 
@@ -56,7 +56,7 @@
       }
 
       var simplateTmpl = simplate.template(document.getElementById('simplate').innerHTML);
-      console.log(simplateTmpl);
+      // console.log(simplateTmpl);
       document.getElementById('spl-demo').innerHTML = simplateTmpl(data);
     </script>
   </body>

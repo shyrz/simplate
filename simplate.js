@@ -102,7 +102,7 @@
         "';return $out;")
       .replace(/\n/g, '\\n').replace(/\t/g, '\\t').replace(/\r/g, '\\r')
       .replace(/(\s|;|\}|^|\{)\$out\+='';/g, '$1').replace(/\+''/g, "");
-    console.log(tpl);
+    // console.log(tpl);
 
     try {
       return new Function('data', tpl);
@@ -115,8 +115,6 @@
   };
 
   simplate.VERSION = '0.1.0';
-
-  var $pl = simplate;
 
   if (typeof (document) !== 'undefined' && document.body) {
     simplate.insertHTML = document.body.innerHTML;
